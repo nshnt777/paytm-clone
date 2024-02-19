@@ -38,7 +38,7 @@ userRouter.post('/signup', async (req, res)=>{
 
             const account = await AccountModel.create({
                 userID: user._id,
-                balance: randBalance
+                balance: randBalance.toFixed(2)
             });
 
             const token = jwt.sign({userID: user._id}, JWT_KEY);
@@ -46,7 +46,7 @@ userRouter.post('/signup', async (req, res)=>{
             return res.status(200).json({
                 message: "User created successfully",
                 token: token
-            })
+            });
         }
     } catch (error) {
         console.log("Error: ", error.message);
@@ -122,22 +122,14 @@ userRouter.put("/", authMiddleware, async (req,res)=>{
     }
 });
 
-userRouter.get("/bulk", async (req,res)=>{
+userRouter.get("/bulk", authMiddleware, async (req,res)=>{
     const filter = req.query.filter;
 
     let foundUsers = []
-
+    
     if(!filter){
-        foundUsers = await UserModel.find({}, {
-            username: 1,
-            firstName: 1,
-            lastName: 1,
-            _id: 1
-        });
-    }
-    else{
         foundUsers = await UserModel.find({
-            $or: [{firstName: /filter/i}, {lastName: /filter/i}]
+            _id: {$ne: req.userID}
         }, {
             username: 1,
             firstName: 1,
@@ -145,8 +137,22 @@ userRouter.get("/bulk", async (req,res)=>{
             _id: 1
         });
     }
+    else{
+        const filterRegex = new RegExp(filter, 'i');
+        foundUsers = await UserModel.find({
+            _id: {$ne: req.userID},
+            $or: [{firstName: filterRegex}, {lastName: filterRegex}]
+        }, {
+            username: 1,
+            firstName: 1,
+            lastName: 1,
+            _id: 1
+        });
+        console.log(foundUsers);
+    }
 
-    if(foundUsers.length > 0){
+
+    if(foundUsers){
         return res.status(200).json({
             users: foundUsers
         });
@@ -157,6 +163,31 @@ userRouter.get("/bulk", async (req,res)=>{
         })
     }
     
+});
+
+userRouter.get('/me', authMiddleware, async (req, res)=>{
+    const userID = req.userID;
+
+    try {
+        const yourName = await UserModel.findOne({
+            _id: userID
+        }, {
+            username: 1,
+            firstName: 1,
+            lastName: 1
+        });
+    
+        return res.status(200).json({
+            username: yourName.username,
+            firstName: yourName.firstName,
+            lastName: yourName.lastName
+        });
+    } catch (error) {
+        console.log("Error fetching name: ", error.message);
+        return res.status(404).json({
+            message: "User not found"
+        });
+    }
 })
 
 export default userRouter;

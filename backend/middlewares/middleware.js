@@ -19,8 +19,8 @@ function authMiddleware(req, res, next){
         })
     }
 
-    const JWTtoken = authArray[1];
     try {
+        const JWTtoken = authArray[1];
         const decodedToken = jwt.verify(JWTtoken, JWT_KEY);
     
         req.userID = decodedToken.userID;
@@ -28,7 +28,7 @@ function authMiddleware(req, res, next){
         next();
     } catch (error) {
         console.log("Error: ", error.message);
-        return res.status(403).jon({
+        return res.status(403).json({
             message: "Invalid token"
         })
     }

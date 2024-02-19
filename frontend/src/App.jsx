@@ -1,18 +1,61 @@
+import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom'
+import Signup from './pages/Signup.jsx'
+import Login from './pages/Login.jsx'
+import Dashboard from './pages/Dashboard.jsx'
+import SendMoney from './pages/SendMoney.jsx'
+import UpdateProfile from './pages/UpdateProfile.jsx'
+import { useEffect } from 'react'
+import axios from 'axios'
 
-// Routes:
-// 1. /signup - The signup page
-// 2. /signin - The signin page
-// 3. /dashboard - Balances and see other users on the platform.
-// 4. /send - Send money to other users
- 
 
 function App() {
-
   return (
-    <div>
-        Hello world
-    </div>
+    <BrowserRouter>
+      <Routes>
+          <Route exact path="/" element={<Home />}/>
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/transfer' element={<SendMoney />} />
+          <Route path='/update' element={<UpdateProfile />} />
+      </Routes>
+    </BrowserRouter>
   )
+}
+
+function Home(){
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    const authToken = localStorage.getItem("token");
+
+    if(!authToken){
+      navigate('/login');
+    }
+    else{
+      axios.get("http://localhost:3000/api/v1/user/me", {
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      })
+        .then((result) => {
+          navigate('/dashboard');
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log("Error status:", error.response.status);
+            console.log("Error:", error.response.data.message);
+          } 
+          else if (error.request) {
+            console.log("No response received:", error.request);
+          } else {
+            console.log("Error setting up the request:", error.message);
+          }
+        });
+    }
+  }, []);
+
+  return null;
 }
 
 export default App

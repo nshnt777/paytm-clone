@@ -1,7 +1,7 @@
 import express from 'express';
 import authMiddleware from '../middlewares/middleware.js';
 import { AccountModel } from '../database/db.js';
-import { string, z } from 'zod';
+import { z } from 'zod';
 import mongoose from 'mongoose';
 
 const accountsRouter = express.Router();
@@ -12,11 +12,14 @@ accountsRouter.get('/balance', authMiddleware, async (req, res)=>{
             userID: req.userID
         });
     
-        res.json({
+        return res.json({
             balance: userAccount.balance
         });
     } catch (error) {
         console.log("Error: ", error.message);
+        return res.status(404).json({
+            message: "Error getting user's account"
+        })
     }
 });
 
@@ -27,9 +30,9 @@ const transferSchema = z.object({
 
 accountsRouter.post('/transfer', authMiddleware, async (req, res)=>{
     const transferBody = req.body;
-
+    
     if(!transferSchema.safeParse(transferBody).success){
-        return res.json({
+        return res.status(411).json({
             message: "Invalid inputs"
         });
     }
