@@ -10,7 +10,7 @@ function Users(){
     useEffect(()=>{
         const authToken = localStorage.getItem("token");
         
-        axios.get("http://localhost:3000/api/v1/user/bulk?filter="+filter, {
+        axios.get("https://paytm-clone-api.vercel.app/api/v1/user/bulk?filter="+filter, {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }

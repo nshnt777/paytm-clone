@@ -13,8 +13,8 @@ function UpdateProfile(){
         const headers = {Authorization: `Bearer ${authToken}`}
 
         const requests = [
-            axios.get("http://localhost:3000/api/v1/account/balance", {headers}),
-            axios.get("http://localhost:3000/api/v1/user/me", {headers})
+            axios.get("https://paytm-clone-api.vercel.app/v1/account/balance", {headers}),
+            axios.get("https://paytm-clone-api.vercel.app/v1/user/me", {headers})
         ]
 
         Promise.all(requests)

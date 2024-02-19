@@ -53,7 +53,7 @@ function SendMoney(){
                             return;
                         }
                         try{
-                            const result = await axios.post("http://localhost:3000/api/v1/account/transfer", {
+                            const result = await axios.post("https://paytm-clone-api.vercel.app/api/v1/account/transfer", {
                                 to: id,
                                 amount: money
                             }, {

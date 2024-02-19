@@ -61,7 +61,7 @@ function Signup(){
 
                     <Button text={"Sign Up"} onClick={async ()=>{
                         try{
-                            const result = await axios.post("http://localhost:3000/api/v1/user/signup", {
+                            const result = await axios.post("https://paytm-clone-api.vercel.app/api/v1/user/signup", {
                                 username: username,
                                 firstName: firstName,
                                 lastName: lastName,
