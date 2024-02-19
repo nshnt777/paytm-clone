@@ -33,7 +33,7 @@ function Home(){
       navigate('/login');
     }
     else{
-      axios.get("https://paytm-clone-api.vercel.app/api/v1/user/me", {
+      axios.get("https://paytm-clone-api-git-test-nishants-projects-85360d67.vercel.app/api/v1/user/me", {
         headers: {
           Authorization: `Bearer ${authToken}`
         }
