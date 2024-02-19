@@ -62,7 +62,7 @@ userRouter.post('/login', async (req,res)=>{
     const loginBody = req.body;
     try {
         if(!loginSchema.safeParse(loginBody).success){
-            return res.status(411).json({
+            res.status(411).json({
                 message: "Incorrect data entered"
             });
         }
@@ -72,14 +72,14 @@ userRouter.post('/login', async (req,res)=>{
             password: loginBody.password
         });
         if(!existingUser){
-            return res.status(411).json({
+            res.status(411).json({
                 message: "Error while logging in"
             })
         }
         else{
             const token = jwt.sign({userID: existingUser._id}, JWT_KEY);
     
-            return res.status(200).json({
+            res.status(200).json({
                 token: token
             });
         }
