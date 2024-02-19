@@ -1,14 +1,15 @@
 {
-  "name": "backend",
+  "name": "paytm-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "bakcend api for a paytm like wallet",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "nishant",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
