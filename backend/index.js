@@ -3,7 +3,7 @@ import router from './routes/index.js'
 import cors from 'cors'
 
 const app = express();
-const port = 3000;
+const port = process.env.POST || 3000;
 
 app.use(cors());
 //disable cors errors
@@ -22,3 +22,5 @@ app.use('/api/v1', router);
 app.listen(port, ()=>{
     console.log('Listening at port '+port);
 });
+
+export default app;
