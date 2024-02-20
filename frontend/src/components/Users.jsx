@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useCallback } from "react"
 import axios from "axios";
 import { useNavigate } from 'react-router-dom'
+import useDebounce from "../hooks/useDebounce";
 
 function Users(){
     const [users, setUsers] = useState([]);
-    const [filter, setFilter] = useState("");
 
-    // **ADD DEBOUNCING**
+    const [filter, setFilter] = useState("");
+    const debouncedValue = useDebounce(filter, 500);
+
     useEffect(()=>{
         const authToken = localStorage.getItem("token");
         
@@ -28,7 +30,7 @@ function Users(){
                     console.log("Error setting up the request:", error.message);
                 }
             })
-    }, [filter])
+    }, [debouncedValue])
 
     return(
         <div className="m-4">
