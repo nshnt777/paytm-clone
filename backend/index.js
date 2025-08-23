@@ -8,7 +8,7 @@ const port = 3000;
 app.use(cors({
   origin: 'https://paytm-clone-phi.vercel.app',
   methods: 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
-  allowedHeaders: ['X-Requested-With', 'Content-Type'],
+  allowedHeaders: ['X-Requested-With', 'Content-Type', 'Authorization'],
   credentials: true
 }));
 //disable cors errors
